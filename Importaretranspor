@@ -1,0 +1,31 @@
+#Importar o diretório de entrada
+diretorio_entrada <- "C:/Users/user PC/Desktop/Matrizes/GC/IphoneGCCru"
+#importar o diretório de saída
+diretorio_saida <- "C:/Users/user PC/Desktop/Matrizes/Transpostas/GC/Comp/iPhone"
+#Listar todos os arquivos no diretório de entrada com a extensão desejada .txt
+arquivos <- list.files(diretorio_entrada, pattern = "\\.txt$", full.names = TRUE)
+#Criar um loop para percorrer cada arquivo, importar o vetor, transpô-lo e salvá-lo em um novo arquivo .txt no diretório de saída:
+for (arquivo in arquivos) {
+   nome_arquivo_saida <- file.path(diretorio_saida, paste0(basename(tools::file_path_sans_ext(arquivo)), ".txt"))
+   
+    vetor <- read.csv(arquivo, header = FALSE)
+    vetor_transposto <- t(vetor)
+    
+    write.table(vetor_transposto, file = nome_arquivo_saida, quote = FALSE, row.names = FALSE, col.names = FALSE)
+ }
+# Esses passos irão importar os arquivos de vetores, transpor cada vetor separadamente e salvá-los como arquivos .txt na pasta de saída especificada.
+
+#Listar todos os arquivos transpostos no diretório de saída com a extensão .txt:
+arquivostranspostos <- list.files(diretorio_saida, pattern = "\\.txt$", full.names = TRUE)
+#Criar um loop para percorrer cada arquivo, ler os vetores e concatená-los:
+vetores_concatenados <- NULL
+ 
+for (arquivo in arquivostranspostos) {
+  vetor <- read.table(arquivo)
+  vetores_concatenados <- rbind(vetores_concatenados, vetor)
+ }
+
+#A função rbind() é usada para concatenar os vetores na variável vetores_concatenados.
+#Salvar os vetores concatenados em um único arquivo em formato .csv:
+arquivo_saida <- "caminho/do/arquivo/saida.csv"
+write.csv(vetores_concatenados, file = arquivo_saida, row.names = FALSE)
